@@ -1,0 +1,58 @@
+.loading {
+    width: 200px;
+    height: 80px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 40px;
+}
+
+.loading-r,
+.loading-r-cover,
+.loading-l,
+.loading-l-cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.loading-r {
+    clip: rect(0, 200px, 200px, 100px);
+    background: #0f0;
+}
+
+.loading-r-cover {
+    clip: rect(0, 200px, 200px, 100px);
+    background: #f00;
+    transform: scale(8) rotate(0deg);
+}
+
+.loading-l {
+    clip: rect(0, 100px, 200px, 0);
+    background: #f00;
+}
+
+.loading-l-cover {
+    clip: rect(0, 200px, 200px, 100px);
+    background: #0f0;
+    transform: scale(8) rotate(0deg);
+    display: none;
+}
+
+.loading-top {
+    position: absolute;
+    background: #fff;
+    width: 196px;
+    height: 76px;
+    line-height: 76px;
+    border-radius: 40px;
+    margin: 2px;
+}
+
+.loading-top:after {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    color: #0f0;
+    content: attr(data-percentage)" %";
+    display: block;
+}

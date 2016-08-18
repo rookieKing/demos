@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>- jsFiddle demo by rookie_king</title>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <style type='text/css'>
+        html, body {
+            font-size: 12px;
+            font-family: "Arial";
+            border: 0px;
+            margin: 0px;
+            padding: 0px;
+            cursor: default;
+            height: 100%;
+            overflow: hidden;
+        }
+        #fireworksDiv {
+            background: #4c4c4c;
+            background-image: linear-gradient(to top, #c4c4c4, #4c4c4c);
+            background-image: -o-linear-gradient(to top, #c4c4c4, #4c4c4c);
+            background-image: -moz-linear-gradient(to top, #c4c4c4, #4c4c4c);
+            background-image: -webkit-linear-gradient(to top, #c4c4c4, #4c4c4c);
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#c4c4c4), to(#4c4c4c));
+            cursor: default;
+            overflow: hidden;
+            position: relative;
+        }
+        #fireworksDiv button {
+            z-index: 99;
+        }
+    </style>
+    <script type='text/javascript'>//<![CDATA[ 
+        $(window).load(function () {
+            String.prototype.format = function () { var arr = arguments; try { return this.replace(/\{(\d+)\}/g, function (x, i) { return arr[i]; }); } catch (e) { return this; } };
+            var fireworks = (function () {
+                var elmentID = "#fireworksDiv", timer;
+                function createCanvas() {
+                    var canvasID = r(10000);
+                    while ($("#" + canvasID).size()) canvasID = r(10000);
+                    $(elmentID).append('<canvas id="{0}" width="150" height="150" style="position: absolute; display:none; left: {1}px; top: {2}px;"></canvas>'.format(canvasID, r($(elmentID).width()) - 75, r($(elmentID).height()) - 75));
+                    fillCanvas(canvasID);
+                    $("#" + canvasID).fadeIn(r(6666));
+                    return canvasID;
+                }
+                function fillCanvas(canvasID) {
+                    var canvas = document.getElementById(canvasID);
+                    var context = canvas.getContext("2d");
+                    context.translate(75, 75);
+                    var circle = 5;
+                    for (var i = 1; i < circle; i++) {
+                        context.fillStyle = "rgb({0},{1},{2})".format(parseInt(Math.random() * 1000) % 170 + 170, parseInt(Math.random() * 1000) % 170 + 170, parseInt(Math.random() * 1000) % 170 + 170);
+                        for (var j = 0; j < i * 6; j++) {
+                            context.rotate(Math.PI * 2 / (i * 6));
+                            context.beginPath();
+                            context.arc(0, i * 12.5, 5, 0, Math.PI / 180 * 360, true);
+                            context.fill();
+                        }
+                    }
+                }
+                function removeCanvas(canvasID) {
+                    setTimeout(function () {
+                        $("#" + canvasID).fadeOut(r(6666), function () { $("#" + canvasID).remove(); });
+                    }, r(8888));
+                }
+                function r(max) {
+                    return Math.ceil(Math.random() * max); //1~max //0~max: Math.floor(Math.random() * (max + 1))
+                }
+                function play() {
+                    if (!timer) {
+                        timer = setInterval(function () {
+                            setTimeout(function () { removeCanvas(createCanvas()); }, r(2000));
+                        }, 666);
+                    }
+                }
+                function stop() {
+                    if (timer) clearInterval(timer) & (timer = null);
+                }
+                return { play: play, stop: stop };
+            })();
+            $(window).resize(function () {
+                $("#fireworksDiv").width($(window).width()).height($(window).height());
+            });
+            $(document).ready(function () {
+                $("#fireworksDiv").width($(window).width()).height($(window).height());
+                $("#fireworksDiv>button:eq(0)").click(function () { fireworks.play(); }).click();
+                $("#fireworksDiv>button:eq(1)").click(function () { fireworks.stop(); });
+            });
+        });//]]>  
+    </script>
+</head>
+<body>
+    <body>
+        <div id="fireworksDiv">
+            <button>开始</button>
+            <button>停止</button>
+            <canvas style="position: absolute; left: 0px; top: 50px; color: #fff;"></canvas>
+        </div>
+    </body>
+</body>
+</html>
