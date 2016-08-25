@@ -4,6 +4,66 @@
 - [flower](https://rookieking.github.io/demos/flower)
 - [fireworks](https://rookieking.github.io/demos/fireworks)
 
+# code snippet
+
+- 使用闭包与自执行函数生成最佳的获取 `xhr` 对象的方法
+
+``` javascript
+var createXhr = (function () {
+    var i = 0,
+        undefinedXHR = typeof XMLHttpRequest === 'undefined',
+        progIds = [
+            'Msxml2.XMLHTTP',
+            'Microsoft.XMLHTTP',
+            'Msxml2.XMLHTTP.4.0'
+            //and more
+        ];
+    if (undefinedXHR) {
+        for (; i < progIds.length; i++) {
+            try {
+                new ActiveXObject(progIds[i]);
+            } catch (e) {
+                continue;
+            }
+            break;
+        }
+    }
+    return undefinedXHR
+        ? function () {
+            return new ActiveXObject(progIds[i]);
+        }
+        : function () {
+            return new XMLHttpRequest();
+        };
+})();
+```
+- urlParse
+
+``` javascript
+function urlParse(url) {
+    var match = /^(https?:)?\/\/((?:[^=\s:?/]+\.)+[^=\s:?/]+)(:\d+)?(\/(?:[^=\s?#]+?(?=[/?#]|$))*)?(\?[^#]*)?(#.*)?$/.exec(url);
+    /*
+        /^
+        (https?:)?\/\/                          //protocol
+        ((?:[^=\s:?/]+\.)+[^=\s:?/]+)           //host
+        (:\d+)?                                 //port
+        (\/(?:[^=\s?#]+?(?=[/?#]|$))*)?         //pathname
+        (\?[^#]*)?                              //search
+        (#.*)?                                  //hash
+        $/
+    */
+    return match ? {
+        protocol: match[1],
+        host: match[2],
+        port: match[3],
+        pathname: match[4],
+        search: match[5] === '?' ? '' : match[5],
+        hash: match[6] === '#' ? '' : match[6],
+        origin: match[1] + '//' + match[2]
+    } : null;
+}
+```
+
 # License
 ```
 MIT License
